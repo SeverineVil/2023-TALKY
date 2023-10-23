@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useNavigate, Link, Outlet } from "react-router-dom";
-import { AuthContext } from "../contexts/authContext";
+import { AuthContext } from "../contexts/AuthContext";
 
 function Login() {
   const [inputs, setInputs] = useState({
@@ -24,6 +24,8 @@ function Login() {
       console.error(err);
     }
   };
+  // console.warn(inputs);
+
   return (
     <div className="login">
       <div className="card">

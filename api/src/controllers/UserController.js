@@ -55,27 +55,21 @@ class UserController {
             .status(403)
             .send({ error: "nom d'utilisateur ou mot de passe incorrect" });
         } else {
-          const { id, password: hash, profilePic } = rows[0];
+          const { id, password: hash, ...userData } = rows[0];
           try {
             if (await bcrypt.compare(password, hash)) {
-              const token = await jwt.sign(
+              const token = jwt.sign(
                 { id, username },
                 process.env.JWT_AUTH_SECRET,
-                { expiresIn: "1h" }
+                { expiresIn: Math.floor(Date.now() / 1000) + 60 * 60 }
               );
 
               res.cookie("accessToken", token, {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === "production",
+                secure: true,
                 sameSite: "none",
               });
-              res.status(200).send({
-                id,
-                username,
-                token,
-                profilePic,
-                message: "logged in !!",
-              });
+              res.status(200).send(userData);
               return;
             }
             res

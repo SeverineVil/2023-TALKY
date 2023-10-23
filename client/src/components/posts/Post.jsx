@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
@@ -23,7 +23,7 @@ function Post({ post }) {
     axios
       .get(`${import.meta.env.VITE_API_URL}/likes/${post.id}`)
       .then((res) => {
-        console.warn(res);
+        // console.warn(res);
         setLikes(res.data.likes);
       })
       .catch((error) => {

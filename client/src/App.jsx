@@ -10,6 +10,7 @@ import Profile from "./pages/Profile";
 
 function App() {
   const queryClient = new QueryClient();
+
   return (
     <div>
       <QueryClientProvider client={queryClient}>

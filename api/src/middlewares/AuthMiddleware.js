@@ -1,18 +1,18 @@
 const jwt = require("jsonwebtoken");
 
 const authorization = (req, res, next) => {
-  const accessToken = req.header("Authorization").split(" ")[1]; // .replace('bearer ', "");
-  console.warn("Access token from header:", accessToken);
+  const token = req.cookies.accessToken;
+  console.warn(`Token reçu : ${token}`);
 
-  if (!accessToken) {
+  if (!token) {
     console.warn("User not logged in!");
     return res.status(401).json({ error: "User not logged in!" });
   }
 
   try {
-    const validToken = jwt.verify(accessToken, process.env.JWT_AUTH_SECRET);
-    req.user = validToken;
-    if (validToken) {
+    const user = jwt.verify(token, process.env.JWT_AUTH_SECRET);
+    req.user = user;
+    if (user) {
       console.warn("le token est valide");
       return next();
     }

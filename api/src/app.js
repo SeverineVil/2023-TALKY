@@ -12,6 +12,7 @@ const likesRoutes = require("./routes/likes.routes");
 const app = express();
 
 app.use(cookieParser());
+
 const corsOptions = {
   origin: process.env.CLIENT_URL ?? "http://localhost:3000",
   credentials: true,

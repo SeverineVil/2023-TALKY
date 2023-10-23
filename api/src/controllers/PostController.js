@@ -20,8 +20,12 @@ class PostController {
   static add = (req, res) => {
     const { desc, img } = req.body;
 
+    console.warn(req.body);
+
     const { accessToken } = req.cookies;
     const token = jwt.verify(accessToken, process.env.JWT_AUTH_SECRET);
+    console.error("token reçu : ", JSON.stringify(token));
+
     try {
       models.post
         .insert({

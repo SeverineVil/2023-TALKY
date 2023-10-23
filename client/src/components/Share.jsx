@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import img from "../assets/img.png";
 import map from "../assets/map.png";
 import friend from "../assets/friend.png";
-import { AuthContext } from "../contexts/authContext";
+import { AuthContext } from "../contexts/AuthContext";
 
 function Share() {
   const [file, setFile] = useState(null);
@@ -26,6 +26,7 @@ function Share() {
   }
 
   const { currentUser } = useContext(AuthContext);
+  // console.warn(currentUser);
 
   const queryClient = useQueryClient();
   const mutation = useMutation(
@@ -51,6 +52,10 @@ function Share() {
     setDesc(""); // ici permet d'effacer le contenu du post et de l'img pour pouvoir en éditer un autre
     setFile(null);
   };
+
+  // console.warn("photo profil", currentUser.profilePic);
+  // console.warn("user", currentUser.username);
+
   return (
     <div className="share">
       <div className="container">

@@ -8,26 +8,37 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { NavLink, useNavigate } from "react-router-dom";
-
-import { AuthContext } from "../contexts/authContext";
+import { AuthContext } from "../contexts/AuthContext";
 
 function Navbar() {
   const { currentUser } = useContext(AuthContext);
-  const isLoggedIn = !!currentUser;
 
   const navigate = useNavigate();
 
   const out = async () => {
-    await axios
-      .post(`${import.meta.env.VITE_API_URL}/user/logout`, {
+    console.warn("Début du logout");
+    try {
+      await axios.post(`${import.meta.env.VITE_API_URL}/user/logout`, {
         withCredentials: true,
-      })
-      .then(() => {
-        Cookies.remove("accessToken");
-      })
-      .then(() => navigate("/", { replace: true }))
+      });
+      console.warn("Requête de déconnexion réussie");
 
-      .catch((err) => console.warn(err));
+      Cookies.remove("accessToken");
+      console.warn("Cookie supprimé");
+
+      // Supprimer la donnée currentUser du localStorage
+      localStorage.removeItem("user");
+      console.warn("Suppression de currentUser du localStorage");
+
+      // Vérifier si currentUser a été supprimé du localStorage
+      const isCurrentUserRemoved = !localStorage.getItem("user");
+      console.warn("isCurrentUserRemoved:", isCurrentUserRemoved);
+
+      console.warn("Redirection vers la page d'accueil");
+      navigate("/", { replace: true });
+    } catch (err) {
+      console.error("Erreur lors de la déconnexion :", err);
+    }
   };
 
   return (
@@ -45,21 +56,16 @@ function Navbar() {
         </div>
       </div>
       <div className="right">
-        {isLoggedIn ? (
-          <>
-            <NavLink to="/website/profile">
-              <PersonOutlinedIcon />
-            </NavLink>
-            <EmailOutlinedIcon />
-            <NotificationsOutlinedIcon />
-            <div className="user">
-              <img src={currentUser.profilePic} alt="me" />
-              <span>{currentUser.username}</span>
-            </div>
-          </>
-        ) : (
-          <span>Guest</span>
-        )}
+        <NavLink to="/website/profile">
+          <PersonOutlinedIcon />
+        </NavLink>
+        <EmailOutlinedIcon />
+        <NotificationsOutlinedIcon />
+        <div className="user">
+          <img src={currentUser.profilePic} alt="me" />
+          <span>{currentUser.username}</span>
+        </div>
+
         <LogoutIcon
           className="logout"
           style={{ cursor: "pointer" }}

@@ -8,7 +8,7 @@ class LikesController {
       .findAll(postId)
       .then(([rows]) => {
         res.status(200).send(rows);
-        console.warn(rows);
+        // console.warn(rows);
       })
       .catch((err) => {
         console.error(err);

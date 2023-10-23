@@ -10,13 +10,16 @@ function AuthContextProvider({ children }) {
   );
 
   const login = async (inputs) => {
-    const res = await axios.post("http://localhost:5000/user/login", inputs, {
-      withCredentials: true,
-    });
+    try {
+      const res = await axios.post("http://localhost:5000/user/login", inputs, {
+        withCredentials: true,
+      });
 
-    setCurrentUser(res.data);
+      setCurrentUser(res.data);
+    } catch (error) {
+      console.error("Login error:", error);
+    }
   };
-
   useEffect(() => {
     localStorage.setItem("user", JSON.stringify(currentUser));
   }, [currentUser]);
@@ -27,11 +30,8 @@ function AuthContextProvider({ children }) {
   );
 
   return (
-    // <AuthContext.Provider key={currentUser.userId} value={authContextValue}>
-    //   {children}
-    // </AuthContext.Provider>
     <AuthContext.Provider value={authContextValue}>
-      {currentUser ? children : <div>Loading...</div>}
+      {children}
     </AuthContext.Provider>
   );
 }

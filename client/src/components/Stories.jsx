@@ -4,17 +4,17 @@ function Stories() {
   const stories = [
     {
       id: 1,
-      username: "audre",
+      username: "love",
       img: "https://images.pexels.com/photos/2662116/pexels-photo-2662116.jpeg?auto=compress&cs=tinysrgb&w=1600",
     },
     {
       id: 2,
-      username: "audre",
+      username: "love",
       img: "https://images.pexels.com/photos/2662116/pexels-photo-2662116.jpeg?auto=compress&cs=tinysrgb&w=1600",
     },
     {
       id: 3,
-      username: "audre",
+      username: "love",
       img: "https://images.pexels.com/photos/2662116/pexels-photo-2662116.jpeg?auto=compress&cs=tinysrgb&w=1600",
     },
   ];

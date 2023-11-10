@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
@@ -17,21 +17,52 @@ TimeAgo.addLocale(fr);
 
 function Post({ post }) {
   const [commentOpen, setCommentOpen] = useState(false);
-  const [likes, setLikes] = useState([]);
+  const [likes, setLikes] = useState(0);
+  const [liked, setLiked] = useState(false);
 
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_API_URL}/likes/${post.id}`)
       .then((res) => {
-        // console.warn(res);
-        setLikes(res.data.likes);
+        const likesCount = res.data;
+        setLikes(likesCount);
       })
       .catch((error) => {
         console.error("Error:", error);
       });
   }, [post.id]);
 
-  // console.warn("nbr de likes", likes);
+  const handleDelete = async (id) => {
+    console.warn(id);
+    await axios
+      .delete(`${import.meta.env.VITE_API_URL}/post/${id}`)
+      .then((res) => {
+        if (res.status === 204) {
+          console.warn("Post supprimé avec succès");
+        } else {
+          console.error("La suppression a échoué");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const handleLike = () => {
+    setLiked(!liked);
+    setLikes(liked ? likes + 1 : likes - 1);
+    // Send a POST request to your server to record the like
+    axios
+      .put(`${import.meta.env.VITE_API_URL}/likes/${post.id}`, {
+        liked: !liked,
+      })
+      .catch((error) => {
+        console.error("Error from server:", error);
+        // Revert the local state if the server request fails
+        setLiked(!liked);
+        setLikes(liked ? likes - 1 : likes + 1);
+      });
+  };
 
   return (
     <div className="post">
@@ -51,16 +82,21 @@ function Post({ post }) {
             </div>
           </div>
           <MoreHorizIcon />
-          <button type="submit">delete</button>
+          <button type="submit" onClick={() => handleDelete(post.id)}>
+            delete
+          </button>
         </div>
         <div className="content">
           <p>{post.desc}</p>
           {post.img && <img src={`upload/${post.img}`} alt="" />}
         </div>
         <div className="info">
-          <div className="item" role="presentation">
-            <FavoriteOutlinedIcon style={{ color: "red" }} />
-            <FavoriteBorderOutlinedIcon />
+          <div className="item" role="presentation" onClick={handleLike}>
+            {liked ? (
+              <FavoriteOutlinedIcon style={{ color: "red" }} />
+            ) : (
+              <FavoriteBorderOutlinedIcon />
+            )}
             {likes} likes
           </div>
           <div

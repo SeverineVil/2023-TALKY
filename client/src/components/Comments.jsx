@@ -5,13 +5,11 @@ import PropTypes from "prop-types";
 import TimeAgo from "javascript-time-ago";
 import fr from "javascript-time-ago/locale/fr";
 import ReactTimeAgo from "react-time-ago";
-// import { AuthContext } from "../contexts/authContext";
 
 TimeAgo.addLocale(fr);
 
 function Comments({ postId }) {
   const [desc, setDesc] = useState("");
-  // const { currentUser } = useContext(AuthContext);
 
   const { isLoading, data } = useQuery(["comment"], () =>
     axios
@@ -25,13 +23,9 @@ function Comments({ postId }) {
 
   const mutation = useMutation(
     (newComment) => {
-      return axios.post(
-        `${import.meta.env.VITE_API_URL}/comment/addcomment`,
-        newComment,
-        {
-          withCredentials: true,
-        }
-      );
+      return axios.post(`${import.meta.env.VITE_API_URL}/comment`, newComment, {
+        withCredentials: true,
+      });
     },
     {
       onSuccess: () => {
@@ -49,7 +43,6 @@ function Comments({ postId }) {
   return (
     <div className="comments">
       <div className="write">
-        {/* <img src={currentUser.profilePic} alt="" /> */}
         <input
           type="text"
           placeholder="write a comment"

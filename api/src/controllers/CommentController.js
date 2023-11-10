@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const models = require("../models");
 
 class CommentController {
-  static browse = (req, res) => {
+  static getComments(req, res) {
     models.comment
       .findAll()
       .then(([rows]) => {
@@ -15,14 +15,13 @@ class CommentController {
           error: err.message,
         });
       });
-  };
+  }
 
-  static add = (req, res) => {
+  static addComment(req, res) {
     const { desc, postId } = req.body;
-    console.warn(req.body); // TODO à retirer
-
     const { accessToken } = req.cookies;
     const token = jwt.verify(accessToken, process.env.JWT_AUTH_SECRET);
+    console.warn(token);
     try {
       models.comment
         .insert({
@@ -36,6 +35,7 @@ class CommentController {
             ...result,
             id: result.insertId,
           });
+          console.warn(result);
         })
 
         .catch((err) => {
@@ -50,6 +50,6 @@ class CommentController {
       });
     }
     return true;
-  };
+  }
 }
 module.exports = CommentController;

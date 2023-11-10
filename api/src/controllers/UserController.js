@@ -67,9 +67,9 @@ class UserController {
               res.cookie("accessToken", token, {
                 httpOnly: true,
                 secure: true,
-                sameSite: "none",
+                sameSite: "strict",
               });
-              res.status(200).send(userData);
+              res.status(200).send({ id, ...userData });
               return;
             }
             res
@@ -94,7 +94,7 @@ class UserController {
     res
       .clearCookie("accessToken", {
         secure: true,
-        sameSite: "none",
+        sameSite: "strict",
       })
       .status(200)
       .json("User has been logged out.");

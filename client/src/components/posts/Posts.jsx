@@ -1,15 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import PropTypes from "prop-types";
+
 import Post from "./Post";
 
-function Posts({ userId }) {
+function Posts() {
   const { isLoading, error, data } = useQuery(["post"], () =>
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/post?userId=${userId}`)
-      .then((res) => {
-        return res.data;
-      })
+    axios.get(`${import.meta.env.VITE_API_URL}/post`).then((res) => {
+      return res.data;
+    })
   );
 
   if (error) {
@@ -27,13 +25,5 @@ function Posts({ userId }) {
     </div>
   );
 }
-
-Posts.propTypes = {
-  userId: PropTypes.number,
-};
-
-Posts.defaultProps = {
-  userId: undefined,
-};
 
 export default Posts;

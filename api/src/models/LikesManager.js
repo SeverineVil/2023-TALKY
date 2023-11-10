@@ -18,6 +18,7 @@ class LikesManager extends AbstractManager {
   }
 
   insert(likes) {
+    console.warn("userId before insertion:", likes.userId);
     return this.connection.query(
       `INSERT INTO ${LikesManager.table} (userId, postId) VALUES (?, ?)`,
       [likes.userId, likes.postId]

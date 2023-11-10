@@ -20,12 +20,8 @@ class PostController {
   static add = (req, res) => {
     const { desc, img } = req.body;
 
-    console.warn(req.body);
-
     const { accessToken } = req.cookies;
     const token = jwt.verify(accessToken, process.env.JWT_AUTH_SECRET);
-    console.error("token reçu : ", JSON.stringify(token));
-
     try {
       models.post
         .insert({
@@ -53,6 +49,24 @@ class PostController {
       });
     }
     return true;
+  };
+
+  static deletePost = (req, res) => {
+    const id = parseInt(req.params.id, 10);
+
+    models.post
+      .delete(id)
+      .then(([result]) => {
+        if (result.affectedRows === 0) {
+          res.status(404).send("Not Found");
+        } else {
+          res.sendStatus(204);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("Error deleting");
+      });
   };
 }
 

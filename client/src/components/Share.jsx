@@ -26,7 +26,6 @@ function Share() {
   }
 
   const { currentUser } = useContext(AuthContext);
-  // console.warn(currentUser);
 
   const queryClient = useQueryClient();
   const mutation = useMutation(
@@ -53,9 +52,6 @@ function Share() {
     setFile(null);
   };
 
-  // console.warn("photo profil", currentUser.profilePic);
-  // console.warn("user", currentUser.username);
-
   return (
     <div className="share">
       <div className="container">
@@ -64,7 +60,7 @@ function Share() {
             <img src={currentUser.profilePic} alt="Pic" />
             <input
               type="text"
-              placeholder={`What's on your mind ${currentUser.username}?`}
+              placeholder={`What's on your mind today ${currentUser.username}? ${currentUser.id}`}
               onChange={(e) => setDesc(e.target.value)}
               value={desc}
             />

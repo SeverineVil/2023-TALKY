@@ -4,14 +4,10 @@ class UserManager extends AbstractManager {
   static table = "user";
 
   findByUsername(username) {
-    return this.connection
-      .query(`select * from ${UserManager.table} where username = ?`, [
-        username,
-      ])
-      .then((result) => {
-        console.warn(result);
-        return result;
-      });
+    return this.connection.query(
+      `select * from ${UserManager.table} where username = ?`,
+      [username]
+    );
   }
 
   findByMail(email) {

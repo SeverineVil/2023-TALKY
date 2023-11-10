@@ -5,15 +5,22 @@ class PostManager extends AbstractManager {
 
   findAll() {
     return this.connection.query(
-      `select p.*, u.id AS userId, username, profilePic from ${PostManager.table} AS p JOIN user AS u ON (u.id = p.userId)
+      `SELECT p.*, u.id AS userId, username, profilePic from ${PostManager.table} AS p JOIN user AS u ON (u.id = p.userId)
        ORDER BY createdAt DESC`
     );
   }
 
   insert(post) {
     return this.connection.query(
-      `insert into ${this.table} (\`desc\`, img, userId, createdAt) values (?, ?, ?, ?)`,
+      `INSERT into ${this.table} (\`desc\`, img, userId, createdAt) values (?, ?, ?, ?)`,
       [post.desc, post.img, post.userId, post.createdAt]
+    );
+  }
+
+  delete(id) {
+    return this.connection.query(
+      `DELETE from ${PostManager.table} WHERE id = ?`,
+      [id]
     );
   }
 }
